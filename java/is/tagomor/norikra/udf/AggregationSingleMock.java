@@ -20,22 +20,11 @@ public class AggregationSingleMock implements AggregationMethod {
     if (value == null)
       return;
 
-    Object[] params = (Object[]) value;
-    for (Object o : params) {
-    // for (int i = 0; params.length; i++) {
-      //counter += params[i].toString().length;
-      counter += o.toString().length();
-    }
+    counter += value.toString().length();
   }
 
   public void leave(Object value) {
-    if (value == null)
-      return;
-
-    Object[] params = (Object[]) value;
-    for (int i = 0; i < params.length; i++) {
-      counter -= params[i].toString().length();
-    }
+    counter -= value.toString().length();
   }
 
   public Object getValue() {
