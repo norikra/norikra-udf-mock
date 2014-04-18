@@ -13,10 +13,10 @@ task :compile do
 
   jarfiles = FileList['jar/**/*.jar'].select{|f| not f.end_with?('/' + jarname)}
   jarfiles << Gem.find_files('esper-*.jar').first
-  classpath = "-classpath java:#{jarfiles.join(':')}"
+  classpath = "--classpath java:#{jarfiles.join(':')}"
 
-  FileList['java/**/*.java'].each do |fn|
-    sh "env LC_ALL=C javac #{classpath} #{fn}"
+  FileList['lib/esper_plugin/**/*.rb'].each do |fn|
+    sh "env LC_ALL=C jrubyc --javac --target java #{classpath} #{fn}"
   end
   sh "env LC_ALL=C jar -cf jar/#{jarname} -C java ."
 end
