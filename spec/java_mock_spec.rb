@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'norikra/udf_spec_helper'
 
 include Norikra::UDFSpecHelper
@@ -24,34 +25,46 @@ describe Norikra::UDF::Downcase do
   end
 end
 
-# describe Norikra::UDF::CountLength do
-#   udf_function Norikra::UDF::CountLength, :valueType => java.lang.Long, :parameters => [[java.lang.String]]
+describe Norikra::UDF::CountBytes do
+  udf_function Norikra::UDF::CountBytes, :valueType => java.lang.Long, :parameters => [[java.lang.String]]
 
-#   it 'returns Long' do
-#     expect(fcall(:countLength, :getValueType)).to eql(java.lang.Long.java_class)
-#   end
+  it 'returns Long' do
+    expect(fcall(:countBytes, :getValueType)).to eql(java.lang.Long.java_class)
+  end
 
-#   it 'counts sum of length of Strings' do
-#     f = function(:countLength)
+  it 'counts sum of bytes of Strings' do
+    f = function(:countBytes)
 
-#     f._call(:enter, "01234")
-#     f._call(:enter, "56789")
-#     f._call(:enter, "01234")
-#     f._call(:enter, "56789")
-#     v = f.getValue
-#     expect(v).to eql(20)
-#     f._call(:clear)
-#     expect(f._call(:getValue)).to eql(0)
-#   end
+    f._call(:enter, "abcde")
+    f._call(:enter, "あいうえお")
+    f._call(:enter, "fghij")
+    v = f.getValue
 
-#   it 'can decrements count with leave' do
-#     expect(fcall(:countLength, :getValue)).to eql(0)
-#     fcall(:countLength, :enter, "01234")
-#     expect(fcall(:countLength, :getValue)).to eql(5)
-#     fcall(:countLength, :leave, "0123")
-#     expect(fcall(:countLength, :getValue)).to eql(1)
-#     fcall(:countLength, :clear)
-#     expect(fcall(:countLength, :getValue)).to eql(0)
-#   end
-# end
+    expect(v).to eql(25) # 5 + 3x5 + 5
 
+    f._call(:clear)
+
+    expect(f._call(:getValue)).to eql(0)
+  end
+
+  it 'can decrements count with leave' do
+    fcall(:countBytes, :clear)
+    expect(fcall(:countBytes, :getValue)).to eql(0)
+
+    fcall(:countBytes, :enter, "01234")
+    expect(fcall(:countBytes, :getValue)).to eql(5)
+
+    fcall(:countBytes, :enter, "a")
+    expect(fcall(:countBytes, :getValue)).to eql(6)
+
+    fcall(:countBytes, :leave, "01234")
+    expect(fcall(:countBytes, :getValue)).to eql(1)
+
+    fcall(:countBytes, :enter, "あいうえお")
+    expect(fcall(:countBytes, :getValue)).to eql(16) # 1 + 3x5
+
+    fcall(:countBytes, :leave, "a")
+    fcall(:countBytes, :leave, "あいうえお")
+    expect(fcall(:countBytes, :getValue)).to eql(0)
+  end
+end
