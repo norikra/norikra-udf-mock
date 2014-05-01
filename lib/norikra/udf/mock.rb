@@ -34,6 +34,16 @@ module Norikra
       end
     end
 
+    class Snakecase < Norikra::UDF::SingleRow
+      def self.init
+        require 'norikra-udf-mock.jar'
+      end
+
+      def definition
+        ["snakecase", "is.tagomor.norikra.udf.CaseSwitchMock", "concatSnakeCased"]
+      end
+    end
+
     class CountLength < Norikra::UDF::AggregationSingle
       def self.init
         require 'norikra-udf-mock.jar'

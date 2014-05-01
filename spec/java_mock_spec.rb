@@ -25,6 +25,15 @@ describe Norikra::UDF::Downcase do
   end
 end
 
+describe Norikra::UDF::Snakecase do
+  udf_function Norikra::UDF::Snakecase
+
+  it 'returns snake case string of arguments' do
+    r = fcall(:snakecase, "foo", "bar", "baz")
+    expect(r).to eql("foo_bar_baz")
+  end
+end
+
 describe Norikra::UDF::CountBytes do
   udf_function Norikra::UDF::CountBytes, :valueType => java.lang.Long, :parameters => [[java.lang.String]]
 
