@@ -58,13 +58,13 @@ bundle exec rake all
 bundle exec rake release
 ```
 
-## Writing UDF
+## Writing UDF and tests
 
 Example codes are for `norikra-udf-myudf`.
 
 ### UDF definitions
 
-UDFs/UDAFs are written by Ruby(JRuby) code. These files are placed as `lib/norikra/udf/your_udf.rb`. No suffixes like `_defs` are required for filename.
+UDFs/UDAFs definitions are written by Ruby(JRuby) code. These files are placed as `lib/norikra/udf/your_udf.rb`. No suffixes like `_defs` are required for filename.
 
 Definition class should have 2 methods.
  * `.init`
@@ -78,6 +78,7 @@ Definition class should have 2 methods.
      1. third element is static method name of UDF implementation (DO NOT specify this for UDAF)
 
 For example:
+
 ```ruby
  # in lib/norikra/myudf.rb
 require 'java'
@@ -115,6 +116,8 @@ module Norikra
   end
 end
 ```
+
+UDF/UDAF implementations are written in whether JRuby or Java, but definition code have same style like just above for both.
 
 ### UDF code by JRuby
 
