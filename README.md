@@ -130,7 +130,7 @@ require 'java'
 java_package 'org.example.yourcompany.norikra.udf'
 
 class MyUDF1  # FQDN: org.example.yourcompany.norikra.udf.MyUDF1
-  def execute(source)
+  def self.execute(source)
     1         # always returns number 1
   end
 end
